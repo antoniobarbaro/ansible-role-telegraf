@@ -1,0 +1,23 @@
+---
+# tasks file for influxdb
+- name: Install influxdb repository
+  yum_repository:
+    name: influxdb
+    description: influxdb repository
+    baseurl: https://repos.influxdata.com/rhel/\$releasever/\$basearch/stable
+    gpgkey: https://repos.influxdata.com/influxdb.key
+    gpgcheck: yes
+
+- name: install telegraf
+  yum:
+    name: 'telegraf-{{ telegraf_version }}'
+    state: present
+    update_cache: yes
+
+- name: enable and start telegraf service
+  systemd:
+    name: telegraf
+    state: started
+    enabled: yes
+
+
