@@ -1,0 +1,29 @@
+- name: set variable output_filters
+  set_fact:
+    output_filters: "{{ telegraf_outputs | join(':') }}"
+  when: not((telegraf_outputs is undefined) or (telegraf_outputs is none) or (telegraf_outputs | trim == '') )    
+
+- name: debug output_filters
+  debug: 
+    msg: "{{ output_filters }}"
+  when: not((telegraf_outputs is undefined) or (telegraf_outputs is none) or (telegraf_outputs | trim == '') )      
+
+- name: set variable input_filters
+  set_fact:
+    input_filters: "{{ telegraf_inputs | join(':') }}"
+  when: not((telegraf_inputs is undefined) or (telegraf_inputs is none) or (telegraf_inputs | trim == '') )    
+
+- name: debug input_filters
+  debug: 
+    msg: "{{ input_filters }}"
+  when: not((telegraf_inputs is undefined) or (telegraf_inputs is none) or (telegraf_inputs | trim == '') )      
+
+- name: create config file
+  shell: telegraf --input-filter {{ input_filters }} --output-filter {{ output_filters }} config > /etc/telegraf/telegraf.conf
+  register: myoutput
+
+- name: debug command create config file
+  debug: 
+    msg: "{{ myoutput.stdout }}"
+  
+
