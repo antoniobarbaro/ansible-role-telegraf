@@ -1,1 +1,7 @@
 telegraf_version: '1.6.3'
+telegraf_agent_logfile: '/var/log/telegraf/telegraf.log'
+telegraf_agent_debug: 'false'
+telegraf_outputs_influxdb_urls: '["http://127.0.0.1:8086"]'
+telegraf_outputs_influxdb_database: '"telegraf"'
+telegraf_outputs_influxdb_username: '"telegraf"'
+telegraf_outputs_influxdb_password: '"metricsmetricsmetricsmetrics"'

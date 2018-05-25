@@ -20,4 +20,63 @@
     state: started
     enabled: yes
 
+- name: configure log file path 
+  ini_file:
+    path: /etc/telegraf/telegraf.conf
+    section: agent
+    option: logfile
+    value: "'{{ telegraf_agent_logfile }}'"
+    backup: yes 
+  notify:
+  - restart telegraf
 
+
+- name: configure debug
+  ini_file:
+    path: /etc/telegraf/telegraf.conf
+    section: agent
+    option: debug
+    value: "{{ telegraf_agent_debug }}"
+    backup: yes 
+  notify:
+  - restart telegraf
+
+- name: configure influxdb urls
+  ini_file:
+    path: /etc/telegraf/telegraf.conf
+    section: '[outputs.influxdb]'
+    option: urls
+    value: "{{ telegraf_outputs_influxdb_urls }}"
+    backup: yes 
+  notify:
+  - restart telegraf
+
+- name: configure influxdb database name
+  ini_file:
+    path: /etc/telegraf/telegraf.conf
+    section: '[outputs.influxdb]'
+    option: database
+    value: "{{ telegraf_outputs_influxdb_database }}"
+    backup: yes 
+  notify:
+  - restart telegraf
+
+- name: configure influxdb username
+  ini_file:
+    path: /etc/telegraf/telegraf.conf
+    section: '[outputs.influxdb]'
+    option: username
+    value: "{{ telegraf_outputs_influxdb_username }}"
+    backup: yes 
+  notify:
+  - restart telegraf
+
+- name: configure influxdb password
+  ini_file:
+    path: /etc/telegraf/telegraf.conf
+    section: '[outputs.influxdb]'
+    option: password
+    value: "{{ telegraf_outputs_influxdb_password }}"
+    backup: yes 
+  notify:
+  - restart telegraf
