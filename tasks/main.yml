@@ -56,7 +56,7 @@
     path: /etc/telegraf/telegraf.conf
     section: '[outputs.influxdb]'
     option: database
-    value: "{{ telegraf_outputs_influxdb_database }}"
+    value: '"{{ telegraf_outputs_influxdb_database }}"'
     backup: yes 
   notify:
   - restart telegraf
@@ -66,17 +66,42 @@
     path: /etc/telegraf/telegraf.conf
     section: '[outputs.influxdb]'
     option: username
-    value: "{{ telegraf_outputs_influxdb_username }}"
+    value: '"{{ telegraf_outputs_influxdb_username }}"'
     backup: yes 
+  when: not((telegraf_outputs_influxdb_username is undefined) or (telegraf_outputs_influxdb_username is none) or (telegraf_outputs_influxdb_username | trim == '') )  
   notify:
   - restart telegraf
+
+- name: remove influxdb username
+  ini_file:
+    path: /etc/telegraf/telegraf.conf
+    section: '[outputs.influxdb]'
+    option: username
+    backup: yes 
+    state: absent
+  when: (telegraf_outputs_influxdb_username is undefined) or (telegraf_outputs_influxdb_username is none) or (telegraf_outputs_influxdb_username | trim == '')
+  notify:
+  - restart telegraf  
+
 
 - name: configure influxdb password
   ini_file:
     path: /etc/telegraf/telegraf.conf
     section: '[outputs.influxdb]'
     option: password
-    value: "{{ telegraf_outputs_influxdb_password }}"
+    value: '"{{ telegraf_outputs_influxdb_password }}"'
     backup: yes 
+  when: not((telegraf_outputs_influxdb_password is undefined) or (telegraf_outputs_influxdb_password is none) or (telegraf_outputs_influxdb_password | trim == '') )  
   notify:
   - restart telegraf
+
+- name: remove influxdb password
+  ini_file:
+    path: /etc/telegraf/telegraf.conf
+    section: '[outputs.influxdb]'
+    option: password
+    backup: yes 
+    state: absent
+  when: (telegraf_outputs_influxdb_password is undefined) or (telegraf_outputs_influxdb_password is none) or (telegraf_outputs_influxdb_password | trim == '')
+  notify:
+  - restart telegraf  
